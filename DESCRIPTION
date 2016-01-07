@@ -3,7 +3,7 @@ Title: Functions for the NPS long-term monitoring data visualization
 Version: 0.1.1
 Authors@R: "Derek Sonderegger <derek.sonderegger@nau.edu> [aut, cre]"
 Description: Functions for the NPS long-term monitoring data visualization
-Depends:
+Depends: 
     R (>= 3.1.0),
     ggplot2,
     tidyr,
@@ -11,3 +11,6 @@ Depends:
 License: GPL 3
 LazyData: true
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
