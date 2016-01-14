@@ -14,6 +14,63 @@ This vignette shows us how to convert data into a format that is useful with the
 ```{r}
 library(devtools)
 library(fda)
-#install_github('dereksonderegger/NPSData') # Only need to do this when there are changes...
+library(dplyr); library(stringr); library(ggplot2); library(tidyr);
+```
+
+
+```{r}
+install_github('dereksonderegger/NPSData') # Only need to do this when there are changes...
 library(NPSData)
+head(abcdPlotGpData)
+
+data <- abcdPlotGpData %>% group_by() %>%
+  mutate( PlotId = factor(PlotId),
+          Park   = factor(str_sub(PlotId,1,4)) )
+data$PlotId <- factor(data$PlotId)
+```
+
+Our first pass at visualizing the data. Notice there is no smoothing yet, just
+connecting the dots.
+```{r}
+small.data <- data %>% filter( Park == 'WUPA' ) # 58 Plots in WUPA
+ggplot(filter(small.data, yearV==2001),
+       aes(x=doyN, y=NdviMed, group=PlotId)) + geom_line()
+```
+
+Now to import these into the fda package. First I want to make
+58 curves.
+```{r}
+# covariate matrix x is [n, 366]
+wide.data <- small.data %>% 
+  select(doyN, NdviMed, PlotId, Park, yearV) %>% 
+  spread(key=doyN, value=NdviMed  ) %>%
+  arrange(PlotId, yearV)
+
+smooth.basis( 1:366,
+              y = t(as.matrix(wide.data %>% select(-c(1:3)))),
+              fdParobj = create.bspline.basis(rangeval=c(1,366, nbasis=20, norder=4)))
+
+my.basis <- create.bspline.basis(rangeval=c(0,366), nbasis=20, norder=4)
+
+X <- eval.basis(evalarg=small.data$doyN, basisobj = my.basis )
+b <- solve(crossprod(X), crossprod(X,small.data$NdviMed))
+my.fd <- fd( b, my.basis,  
+             list('DOY','Plot' = list(unique(small.data$PlotId)), 'Median NDVI'))
+```
+
+plot(my.fd)
+
+```{r}
+x <- small.matrix$doyN
+
+model <- smooth.basis(small.data$doyN, )
+```
+
+
+```{r}
+daytime <- 1:365 - .5
+JJindex <- c(182:365, 1:181)
+tempmat <- daily$tempav[JJindex,]
+tempbasis <- create.fourier.basis(c(0,365), 65)
+tempfd    <- smooth.basis(daytime, tempmat, tempbasis)$fd 
 ```
