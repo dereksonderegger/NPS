@@ -1,0 +1,19 @@
+---
+title: "Loading Data"
+author: "Derek Sonderegger"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Loading Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette shows us how to convert data into a format that is useful with the fda package.
+
+```{r}
+library(devtools)
+library(fda)
+#install_github('dereksonderegger/NPSData') # Only need to do this when there are changes...
+library(NPSData)
+```

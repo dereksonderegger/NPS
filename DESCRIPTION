@@ -1,12 +1,13 @@
 Package: NPS
-Title: Functions for the NPS long-term monitoring data visualization
-Version: 0.1.1
+Title: Visualizing Long-term Monitoring for the NPS
+Version: 0.1.0
 Authors@R: "Derek Sonderegger <derek.sonderegger@nau.edu> [aut, cre]"
-Description: Functions for the NPS long-term monitoring data visualization
+Description: Functions for visualizing Long-term Monitoring data for the
+    National Parks Service Unitis of the Southern Colorado Plateau and Greater
+    Yellowstone Networks.
 Depends: 
     R (>= 3.1.0),
     ggplot2,
-    tidyr,
     dplyr (>= 0.2.0)
 License: GPL 3
 LazyData: true
